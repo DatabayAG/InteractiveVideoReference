@@ -170,8 +170,63 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 	 */
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version)
 	{
-		// TODO: Implement getElementHTML() method.
-		return $a_properties['xvid_ref_id'];
+		/**
+		 * @var $ilAccess ilAccessHandler
+		 * @var $tree     ilTree
+		 */
+		global $ilAccess, $tree;
+
+		if(!isset($a_properties['xvid_ref_id']) || !is_numeric($a_properties['xvid_ref_id']) || $a_properties['xvid_ref_id'] <= 0)
+		{
+			return '';
+		}
+
+		$ref_id = $a_properties['xvid_ref_id'];
+		if(!ilObject::_exists($ref_id, true))
+		{
+			return '';
+		}
+
+		if($tree->isDeleted($ref_id))
+		{
+			return '';
+		}
+
+		if(!$ilAccess->checkAccess('visible', '', $ref_id))
+		{
+			return '';
+		}
+
+		$pl  = $this->getPlugin();
+		$tpl = $pl->getTemplate('tpl.content.html');
+
+		/**
+		 * @var $xvid ilObjInteractiveVideo
+		 */
+		$xvid = ilObjectFactory::getInstanceByRefId($ref_id);
+
+		$tpl->setVariable('TITLE', $xvid->getTitle());
+		$tpl->setVariable('DESCRIPTION', $xvid->getDescription());
+		$tpl->setVariable('ICON', ilObject::_getIcon($xvid->getId()));
+
+		if($ilAccess->checkAccess('read', '', $ref_id))
+		{
+			$params = array();
+
+			if('presentation' == $a_mode)
+			{
+				$url = parse_url(ILIAS_HTTP_PATH);
+				$params['xvid_referrer'] = urlencode($url['scheme'] . '://' . $url['host'] . (isset($url['port']) ?  ':' . $url['port'] : '') . $_SERVER['REQUEST_URI']);
+			}
+
+			$params['xvid_referrer_ref_id'] = (int)$_GET['ref_id'];
+
+			require_once 'Services/Link/classes/class.ilLink.php';
+			$tpl->setVariable('LINK', ilLink::_getLink($ref_id, 'xvid', $params));
+			$tpl->setVariable('LINK_TITLE', $xvid->getTitle());
+		}
+
+		return $tpl->get();
 	}
 
 }
