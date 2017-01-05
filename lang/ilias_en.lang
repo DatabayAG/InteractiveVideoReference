@@ -1,1 +1,3 @@
 cmd_insert#:#Insert InteractiveVideo Reference
+xvid_ref_id#:#InteractiveVideo Reference
+xvid_ref_id_info#:#Please choose an InteractiveVideo Reference from the repository tree.
