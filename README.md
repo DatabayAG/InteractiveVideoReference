@@ -1,4 +1,4 @@
-# CourseBookingCron
+# InteractiveVideo
 * For ILIAS versions: 5.0.0 - 5.1.999
 
 ## Installation Instructions
