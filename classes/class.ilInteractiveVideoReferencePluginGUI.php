@@ -123,7 +123,12 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 	{
 		global $tpl;
 
+		$properties = $this->getProperties();
+
 		$form = $this->getConfigurationForm();
+		$form->setValuesByArray(array(
+			'xvid_ref_id' => $properties['xvid_ref_id']
+		));
 		$tpl->setContent($form->getHTML());
 	}
 
@@ -166,7 +171,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version)
 	{
 		// TODO: Implement getElementHTML() method.
-		return 'HelloWorld';
+		return $a_properties['xvid_ref_id'];
 	}
 
 }
