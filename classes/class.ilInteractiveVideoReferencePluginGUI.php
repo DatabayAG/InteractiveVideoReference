@@ -213,10 +213,9 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		{
 			$params = array();
 
-			if('presentation' == $a_mode)
+			if(in_array($a_mode, array('presentation', 'preview')))
 			{
-				$url = parse_url(ILIAS_HTTP_PATH);
-				$params['xvid_referrer'] = urlencode($url['scheme'] . '://' . $url['host'] . (isset($url['port']) ?  ':' . $url['port'] : '') . $_SERVER['REQUEST_URI']);
+				$params['xvid_referrer'] = urlencode($_SERVER['REQUEST_URI']);
 			}
 
 			$params['xvid_referrer_ref_id'] = (int)$_GET['ref_id'];
