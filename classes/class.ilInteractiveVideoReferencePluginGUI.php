@@ -15,6 +15,9 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 	 */
 	public function executeCommand()
 	{
+		/**
+		 * @var $ilCtrl ilCtrl
+		 */
 		global $ilCtrl;
 
 		$next_class = $ilCtrl->getNextClass();
@@ -36,10 +39,15 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 	}
 
 	/**
+	 * @param bool $a_create
 	 * @return ilPropertyFormGUI
 	 */
 	protected function getConfigurationForm($a_create = false)
 	{
+		/**
+		 * @var $lng  ilLanguage
+		 * @var $ilCtrl ilCtrl
+		 */
 		global $lng, $ilCtrl;
 
 		require_once 'Services/Form/classes/class.ilPropertyFormGUI.php';
@@ -173,6 +181,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		/**
 		 * @var $ilAccess ilAccessHandler
 		 * @var $tree     ilTree
+		 * @var $tpl ilTemplate
 		 */
 		global $ilAccess, $tree;
 
