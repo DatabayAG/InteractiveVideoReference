@@ -187,23 +187,24 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
 		if(!isset($a_properties['xvid_ref_id']) || !is_numeric($a_properties['xvid_ref_id']) || $a_properties['xvid_ref_id'] <= 0)
 		{
-			return '';
+			// Workaround for issue in ilPCPlugged
+			return '<!-- nothing -->';
 		}
 
 		$ref_id = $a_properties['xvid_ref_id'];
 		if(!ilObject::_exists($ref_id, true))
 		{
-			return '';
+			return '<!-- nothing -->';
 		}
 
 		if($tree->isDeleted($ref_id))
 		{
-			return '';
+			return '<!-- nothing -->';
 		}
 
 		if(!$ilAccess->checkAccess('visible', '', $ref_id))
 		{
-			return '';
+			return '<!-- nothing -->';
 		}
 
 		$pl  = $this->getPlugin();
