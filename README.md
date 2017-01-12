@@ -1,5 +1,6 @@
 # InteractiveVideoReference
 * For ILIAS versions: 5.0.0 - 5.1.999
+Only compatible with InteractiveVideo version 2.0.0 and higher
 
 ## Installation Instructions
 1. Clone this repository to <ILIAS_DIRECTORY>/Customizing/global/plugins/Services/COPage/PageComponent/InteractiveVideoReference
