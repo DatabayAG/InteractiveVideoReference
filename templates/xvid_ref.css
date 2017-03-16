@@ -1,0 +1,29 @@
+.iosInteractiveVideoReferenceContainer {
+	background-color: lightgrey;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.iosInteractiveVideoReferenceContainer li {
+	background-color: lightgrey;
+	padding: 10px;
+}
+
+.iosInteractiveVideoReferenceContainer .lft {
+	background-color: inherit; !important;
+	float: left;
+	width: 40px;
+	padding-right: 10px;
+	overflow: hidden;
+	text-align: center;
+}
+
+.iosInteractiveVideoReferenceContainer .rgt {
+	float: left;
+	background-color: inherit; !important;
+}
+
+.iosInteractiveVideoReferenceContainer .rgt h2 {
+	margin-top: 0;
+}

@@ -1,3 +1,14 @@
-<p><img src="{ICON}" alt="{TITLE}" /> {TITLE}<p>
-<!-- BEGIN desc --><p>{DESCRIPTION}</p><!-- END desc -->
-<!-- BEGIN link --><p><a href="{LINK}">{LINK_TITLE}</a></p><!-- END link -->
+<ul class="iosInteractiveVideoReferenceContainer">
+	<li>
+		<div>
+			<div class="lft"><img src="{ICON}" alt="{TITLE}" /></div>
+			<div class="rgt">
+				<!-- BEGIN unlinked_title --><h2>{UNLINKED_TITLE}</h2><!-- END unlinked_title -->
+				<!-- BEGIN linked_title --><h2><a href="{URL}">{LINKED_TITLE}</a></h2><!-- END linked_title -->
+				<!-- BEGIN desc --><p>{DESCRIPTION}</p><!-- END desc -->
+				<!-- BEGIN link -->{LINK_BUTTON}<!-- END link -->
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</li>
+</ul>

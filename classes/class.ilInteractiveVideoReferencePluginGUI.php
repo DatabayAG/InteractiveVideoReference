@@ -174,6 +174,15 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 	}
 
 	/**
+	 * @return string
+	 */
+	private function getEmptyResponseString()
+	{
+		// Workaround for issue in ilPCPlugged
+		return  '<!-- nothing -->';
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version)
@@ -187,24 +196,23 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
 		if(!isset($a_properties['xvid_ref_id']) || !is_numeric($a_properties['xvid_ref_id']) || $a_properties['xvid_ref_id'] <= 0)
 		{
-			// Workaround for issue in ilPCPlugged
-			return '<!-- nothing -->';
+			return $this->getEmptyResponseString();
 		}
 
 		$ref_id = $a_properties['xvid_ref_id'];
 		if(!ilObject::_exists($ref_id, true))
 		{
-			return '<!-- nothing -->';
+			return $this->getEmptyResponseString();
 		}
 
 		if($tree->isDeleted($ref_id))
 		{
-			return '<!-- nothing -->';
+			return $this->getEmptyResponseString();
 		}
 
 		if(!$ilAccess->checkAccess('visible', '', $ref_id))
 		{
-			return '<!-- nothing -->';
+			return $this->getEmptyResponseString();
 		}
 
 		$pl  = $this->getPlugin();
@@ -230,9 +238,21 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
 			$params['xvid_referrer_ref_id'] = (int)$_GET['ref_id'];
 
+			require_once  'Services/UIComponent/Button/classes/class.ilLinkButton.php';
+			$btn = ilLinkButton::getInstance();
+			$btn->setCaption($pl->txt('goto_xvid'), false);
+			$btn->setUrl(ilLink::_getLink($ref_id, 'xvid', $params));
 			require_once 'Services/Link/classes/class.ilLink.php';
-			$tpl->setVariable('LINK', ilLink::_getLink($ref_id, 'xvid', $params));
-			$tpl->setVariable('LINK_TITLE', $xvid->getTitle());
+			$tpl->setVariable('LINK_BUTTON', $btn->render());
+
+			$tpl->setVariable('LINKED_TITLE', $xvid->getTitle());
+			$tpl->setVariable('URL', $btn->getUrl());
+
+			$GLOBALS['tpl']->addCss('./Customizing/global/plugins/Services/COPage/PageComponent/InteractiveVideoReference/templates/xvid_ref.css');
+		}
+		else
+		{
+			$tpl->setVariable('UNLINKED_TITLE', $xvid->getTitle());
 		}
 
 		return $tpl->get();
