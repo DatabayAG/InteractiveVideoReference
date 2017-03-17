@@ -246,7 +246,6 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 			{
 				$params['xvid_referrer'] = urlencode($_SERVER['REQUEST_URI']);
 			}
-
 			$params['xvid_referrer_ref_id'] = (int)$_GET['ref_id'];
 
 			if($a_properties['show_button'])
