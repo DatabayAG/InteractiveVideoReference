@@ -248,19 +248,20 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 			}
 			$params['xvid_referrer_ref_id'] = (int)$_GET['ref_id'];
 
+			require_once 'Services/Link/classes/class.ilLink.php';
+
 			if($a_properties['show_button'])
 			{
 				require_once 'Services/UIComponent/Button/classes/class.ilLinkButton.php';
 				$btn = ilLinkButton::getInstance();
 				$btn->setCaption($pl->txt('goto_xvid'), false);
 				$btn->setUrl(ilLink::_getLink($ref_id, 'xvid', $params));
-				require_once 'Services/Link/classes/class.ilLink.php';
 				$tpl->setVariable('LINK_BUTTON', $btn->render());
 			}
 
 			$tpl->setVariable('LINKED_TITLE', $xvid->getTitle());
 			$tpl->setVariable('URL', ilLink::_getLink($ref_id, 'xvid', $params));
-			}
+		}
 		else
 		{
 			$tpl->setVariable('UNLINKED_TITLE', $xvid->getTitle());
