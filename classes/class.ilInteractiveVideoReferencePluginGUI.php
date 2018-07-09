@@ -170,7 +170,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		if($form->checkInput())
 		{
 			$properties = array(
-				'xvid_ref_id' => $form->getInput('xvid_ref_id'),
+				'xvid_ref_id' => (int)$form->getInput('xvid_ref_id'),
 				'show_button' => (int)$form->getInput('show_button')
 			);
 
@@ -196,7 +196,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
 		$form = $this->getConfigurationForm();
 		$form->setValuesByArray(array(
-			'xvid_ref_id' => $properties['xvid_ref_id'],
+			'xvid_ref_id' => (int)$properties['xvid_ref_id'],
 			'show_button' => (bool)$properties['show_button']
 		));
 		$tpl->setContent($form->getHTML());
@@ -213,7 +213,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		if($form->checkInput())
 		{
 			$properties = array(
-				'xvid_ref_id' => $form->getInput('xvid_ref_id'),
+				'xvid_ref_id' => (int)$form->getInput('xvid_ref_id'),
 				'show_button' => (int)$form->getInput('show_button')
 			);
 
@@ -262,7 +262,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 			return $this->getEmptyResponseString();
 		}
 
-		$ref_id = $a_properties['xvid_ref_id'];
+		$ref_id = (int)$a_properties['xvid_ref_id'];
 		if(!ilObject::_exists($ref_id, true))
 		{
 			return $this->getEmptyResponseString();
