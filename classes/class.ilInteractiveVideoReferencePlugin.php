@@ -9,6 +9,48 @@ require_once 'Services/COPage/classes/class.ilPageComponentPlugin.php';
 class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
 {
 	/**
+	 * @var string
+	 */
+	const CTYPE   = 'Services';
+
+	/**
+	 * @var string
+	 */
+	const CNAME   = 'COPage';
+
+	/**
+	 * @var string
+	 */
+	const SLOT_ID = 'pgcp';
+
+	/**
+	 * @var string
+	 */
+	const PNAME   = 'InteractiveVideoReference';
+
+	/**
+	 * @var self
+	 */
+	private static $instance;
+
+	/**
+	 * @return self|\ilPlugin|\ilUserInterfaceHookPlugin
+	 */
+	public static function getInstance()
+	{
+		if (null !== self::$instance) {
+			return self::$instance;
+		}
+
+		return (self::$instance = \ilPluginAdmin::getPluginObject(
+			self::CTYPE,
+			self::CNAME,
+			self::SLOT_ID,
+			self::PNAME
+		));
+	}
+
+	/**
 	 * @var array
 	 */
 	protected static $validParentTypes = array(

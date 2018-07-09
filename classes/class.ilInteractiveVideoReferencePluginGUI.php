@@ -7,6 +7,7 @@ require_once 'Services/COPage/classes/class.ilPageComponentPluginGUI.php';
  * Class ilInteractiveVideoReferencePlugin
  * @ilCtrl_isCalledBy ilInteractiveVideoReferencePluginGUI: ilPCPluggedGUI
  * @ilCtrl_Calls ilInteractiveVideoReferencePluginGUI: ilPropertyFormGUI
+ * @ilCtrl_isCalledBy ilInteractiveVideoReferencePluginGUI: ilUIPluginRouterGUI
  */
 class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 {
@@ -16,11 +17,14 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 	public function executeCommand()
 	{
 		/**
-		 * @var $ilCtrl ilCtrl
+		 * @var $ilCtrl   \ilCtrl
+		 * @var $ilAccess \ilAccessHandler
 		 */
-		global $ilCtrl;
+		global $ilCtrl, $ilAccess;
 
 		$next_class = $ilCtrl->getNextClass();
+
+		$this->ensuredPermissionsForTreeOperationOnCreateEvent($ilCtrl, $ilAccess);
 
 		switch($next_class)
 		{
@@ -36,6 +40,45 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 				}
 				break;
 		}
+	}
+
+	/**
+	 * @param \ilCtrl $ctrl
+	 * @param ilAccessHandler $access
+	 * @throws ilException
+	 */
+	protected function ensuredPermissionsForTreeOperationOnCreateEvent(\ilCtrl $ctrl, \ilAccessHandler $access)
+	{
+		$isTreeCommandOnCreationScreen = false;
+
+		$history = $ctrl->getCallHistory();
+		foreach ($history as $entry) {
+			if (strtolower('ilUIPluginRouterGUI') === strtolower($entry['class'])) {
+				$isTreeCommandOnCreationScreen = true;
+				break;
+			}
+		}
+
+		if ($isTreeCommandOnCreationScreen && strtolower('handleExplorerCommand') !== strtolower($ctrl->getCmd())) {
+			throw new \ilException("Permission denied!");
+		}
+
+		if ($isTreeCommandOnCreationScreen && !$access->checkAccess('write', '', (int)$_GET['ref_id'])) {
+			throw new \ilException("Permission denied!");
+		}
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getPlugin()
+	{
+		if (null === $this->plugin) {
+			require 'class.ilInteractiveVideoReferencePlugin.php';
+			$this->plugin = \ilInteractiveVideoReferencePlugin::getInstance();
+		}
+
+		return parent::getPlugin();
 	}
 
 	/**
@@ -60,10 +103,19 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
 		$pl->includeClass('form/class.ilInteractiveVideoReferenceSelectionExplorerGUI.php');
 		$ilCtrl->setParameterByClass('ilformpropertydispatchgui', 'postvar', 'xvid_ref_id');
-		$explorer_gui = new ilInteractiveVideoReferenceSelectionExplorerGUI(
-			array('ilpropertyformgui', 'ilformpropertydispatchgui', 'ilInteractiveVideoReferenceRepositorySelectorInputGUI'),
-			'handleExplorerCommand'
-		);
+
+		if ($a_create) {
+			$ilCtrl->setParameterByClass('ilInteractiveVideoReferenceRepositorySelectorInputGUI', 'ref_id', (int)$_GET['ref_id']);
+			$explorer_gui = new ilInteractiveVideoReferenceSelectionExplorerGUI(
+				array('iluipluginroutergui', __CLASS__, 'ilpropertyformgui', 'ilformpropertydispatchgui', 'ilInteractiveVideoReferenceRepositorySelectorInputGUI'),
+				'handleExplorerCommand'
+			);
+		} else {
+			$explorer_gui = new ilInteractiveVideoReferenceSelectionExplorerGUI(
+				array('ilpropertyformgui', 'ilformpropertydispatchgui', 'ilInteractiveVideoReferenceRepositorySelectorInputGUI'),
+				'handleExplorerCommand'
+			);
+		}
 
 		$pl->includeClass('form/class.ilInteractiveVideoReferenceRepositorySelectorInputGUI.php');
 		$sap_root_ref_id = new ilInteractiveVideoReferenceRepositorySelectorInputGUI(
