@@ -2,6 +2,7 @@
 /* Copyright (c) 1998-2017 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 require_once 'Services/COPage/classes/class.ilPageComponentPluginGUI.php';
+require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/InteractiveVideo/classes/class.ilObjInteractiveVideoGUI.php';
 
 /**
  * Class ilInteractiveVideoReferencePlugin
@@ -133,6 +134,14 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		$show_button->setValue(1);
 		$show_button->setInfo($pl->txt('show_button_info'));
 		$form->addItem($show_button);
+		
+		$show_video = new ilCheckboxInputGUI(
+			$pl->txt('show_video'),
+			'show_video'
+		);
+		$show_video->setValue(1);
+		$show_video->setInfo($pl->txt('show_video_info'));
+		$form->addItem($show_video);
 
 		if($a_create)
 		{
@@ -171,7 +180,8 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		{
 			$properties = array(
 				'xvid_ref_id' => (int)$form->getInput('xvid_ref_id'),
-				'show_button' => (int)$form->getInput('show_button')
+				'show_button' => (int)$form->getInput('show_button'),
+				'show_video' => (int)$form->getInput('show_video')
 			);
 
 			if($this->createElement($properties))
@@ -197,7 +207,8 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		$form = $this->getConfigurationForm();
 		$form->setValuesByArray(array(
 			'xvid_ref_id' => (int)$properties['xvid_ref_id'],
-			'show_button' => (bool)$properties['show_button']
+			'show_button' => (bool)$properties['show_button'],
+			'show_video' => (bool)$properties['show_video']
 		));
 		$tpl->setContent($form->getHTML());
 	}
@@ -214,7 +225,8 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		{
 			$properties = array(
 				'xvid_ref_id' => (int)$form->getInput('xvid_ref_id'),
-				'show_button' => (int)$form->getInput('show_button')
+				'show_button' => (int)$form->getInput('show_button'),
+				'show_video' => (int)$form->getInput('show_video')
 			);
 
 			if($this->updateElement($properties))
@@ -280,52 +292,56 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
 		$pl  = $this->getPlugin();
 		$tpl = $pl->getTemplate('tpl.content.html');
+		$GLOBALS['tpl']->addCss('./Customizing/global/plugins/Services/COPage/PageComponent/InteractiveVideoReference/templates/xvid_ref.css');
 
-		require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/InteractiveVideo/classes/class.ilObjInteractiveVideoGUI.php';
-
-		$obj = new ilObjInteractiveVideoGUI($ref_id);
-		$player = $obj->showContent(true);
-		$tpl->setVariable('PLAYER', $player);
 		/**
 		 * @var $xvid ilObjInteractiveVideo
 		 */
 		$xvid = ilObjectFactory::getInstanceByRefId($ref_id);
 
-		$tpl->setVariable('TITLE', $xvid->getTitle());
-		$tpl->setVariable('DESCRIPTION', $xvid->getDescription());
-		$tpl->setVariable('ICON', ilObject::_getIcon($xvid->getId()));
-
-		if($ilAccess->checkAccess('read', '', $ref_id))
-		{
-			$params = array();
-
-			if(in_array($a_mode, array('presentation', 'preview')))
-			{
-				$params['xvid_referrer'] = urlencode($_SERVER['REQUEST_URI']);
+		if($a_properties['show_video']) {
+			if($ilAccess->checkAccess('read', '', $ref_id)) {
+				$obj    = new ilObjInteractiveVideoGUI($ref_id);
+				$player = $obj->showContent(true);
+				$tpl->setVariable('PLAYER', $player);
+				return $tpl->get();
 			}
-			$params['xvid_referrer_ref_id'] = (int)$_GET['ref_id'];
+		} 
+		else{
+			$tpl->setVariable('TITLE', $xvid->getTitle());
+			$tpl->setVariable('DESCRIPTION', $xvid->getDescription());
+			$tpl->setVariable('ICON', ilObject::_getIcon($xvid->getId()));
 
-			require_once 'Services/Link/classes/class.ilLink.php';
-
-			if($a_properties['show_button'])
+			if($ilAccess->checkAccess('read', '', $ref_id))
 			{
-				require_once 'Services/UIComponent/Button/classes/class.ilLinkButton.php';
-				$btn = ilLinkButton::getInstance();
-				$btn->setCaption($pl->txt('goto_xvid'), false);
-				$btn->setUrl(ilLink::_getLink($ref_id, 'xvid', $params));
-				$tpl->setVariable('LINK_BUTTON', $btn->render());
+				$params = array();
+
+				if(in_array($a_mode, array('presentation', 'preview')))
+				{
+					$params['xvid_referrer'] = urlencode($_SERVER['REQUEST_URI']);
+				}
+				$params['xvid_referrer_ref_id'] = (int)$_GET['ref_id'];
+
+				require_once 'Services/Link/classes/class.ilLink.php';
+
+				if($a_properties['show_button'])
+				{
+					require_once 'Services/UIComponent/Button/classes/class.ilLinkButton.php';
+					$btn = ilLinkButton::getInstance();
+					$btn->setCaption($pl->txt('goto_xvid'), false);
+					$btn->setUrl(ilLink::_getLink($ref_id, 'xvid', $params));
+					$tpl->setVariable('LINK_BUTTON', $btn->render());
+				}
+
+				$tpl->setVariable('LINKED_TITLE', $xvid->getTitle());
+				$tpl->setVariable('URL', ilLink::_getLink($ref_id, 'xvid', $params));
 			}
-
-			$tpl->setVariable('LINKED_TITLE', $xvid->getTitle());
-			$tpl->setVariable('URL', ilLink::_getLink($ref_id, 'xvid', $params));
+			else
+			{
+				$tpl->setVariable('UNLINKED_TITLE', $xvid->getTitle());
+			}
+			return $tpl->get();
 		}
-		else
-		{
-			$tpl->setVariable('UNLINKED_TITLE', $xvid->getTitle());
-		}
-		$GLOBALS['tpl']->addCss('./Customizing/global/plugins/Services/COPage/PageComponent/InteractiveVideoReference/templates/xvid_ref.css');
-
-		return $tpl->get();
 	}
 
 }
