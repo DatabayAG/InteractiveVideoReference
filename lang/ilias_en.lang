@@ -2,6 +2,7 @@ cmd_insert#:#Insert InteractiveVideo Reference
 xvid_ref_id#:#InteractiveVideo Reference
 xvid_ref_id_info#:#Please choose an InteractiveVideo Reference from the repository tree.
 goto_xvid#:#go to the interactive video
+show_button#:#Show Button
 show_button_info#:#If activated ILIAS will display a button to the interactive video in the presentation view.
 show_video#:#Show Video
 show_video_info#:#If activated ILIAS will display the interactive video directly.
