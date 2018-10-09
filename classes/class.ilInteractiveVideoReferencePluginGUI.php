@@ -281,6 +281,11 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		$pl  = $this->getPlugin();
 		$tpl = $pl->getTemplate('tpl.content.html');
 
+		require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/InteractiveVideo/classes/class.ilObjInteractiveVideoGUI.php';
+
+		$obj = new ilObjInteractiveVideoGUI($ref_id);
+		$player = $obj->showContent(true);
+		$tpl->setVariable('PLAYER', $player);
 		/**
 		 * @var $xvid ilObjInteractiveVideo
 		 */
