@@ -258,7 +258,11 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 	}
 
 	/**
-	 * @inheritdoc
+	 * @param       $a_mode
+	 * @param array $a_properties
+	 * @param       $plugin_version
+	 * @return string
+	 * @throws ilTemplateException
 	 */
 	public function getElementHTML($a_mode, array $a_properties, $plugin_version)
 	{
@@ -302,7 +306,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		if($a_properties['show_video']) {
 			if($ilAccess->checkAccess('read', '', $ref_id)) {
 				$obj    = new ilObjInteractiveVideoGUI($ref_id);
-				$player = $obj->showContent(true);
+				$player = $obj->showContentAsPageComponent();
 				$tpl->setVariable('PLAYER', $player);
 				return $tpl->get();
 			}
@@ -342,6 +346,8 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 			}
 			return $tpl->get();
 		}
+
+		return $this->getEmptyResponseString();
 	}
 
 }
