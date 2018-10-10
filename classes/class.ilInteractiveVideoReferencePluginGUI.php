@@ -306,7 +306,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		if($a_properties['show_video']) {
 			if($ilAccess->checkAccess('read', '', $ref_id)) {
 				$obj    = new ilObjInteractiveVideoGUI($ref_id);
-				$player = $obj->showContentAsPageComponent();
+				$player = $obj->getContentAsString();
 				$tpl->setVariable('PLAYER', $player);
 				return $tpl->get();
 			}
