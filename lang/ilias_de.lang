@@ -4,5 +4,8 @@ xvid_ref_id_info#:#Bitte wählen Sie eine InteraktivesVideo-Referenz aus dem Mag
 goto_xvid#:#weiter zum interaktiven Video
 show_button#:#Button anzeigen
 show_button_info#:#Falls aktiviert, wird in der Präsentationsansicht ein Button zum interaktiven Video angezeigt.
+mode#:#Modus mit dem das Interaktive Video angezeigt wird
+show_link_info#:#Falls aktiviert, wird ein Link zum interaktiven Video angezeigt.
+show_link#:#Zeige Link
 show_video#:#Video anzeigen
 show_video_info#:#Falls aktiviert, wird das IneractiveVideo direkt angezeigt.

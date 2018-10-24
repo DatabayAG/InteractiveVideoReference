@@ -12,6 +12,9 @@ require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/In
  */
 class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 {
+	const PAGE_MODE_BUTTON = 0;
+	const PAGE_MODE_VIDEO  = 1;
+
 	/**
 	 * @inheritdoc
 	 */
@@ -127,21 +130,22 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		$sap_root_ref_id->setInfo($pl->txt('xvid_ref_id_info'));
 		$form->addItem($sap_root_ref_id);
 
+		$radio_button = new ilRadioGroupInputGUI($pl->txt('mode'), 'page_mode');
+		$mode_button = new \ilRadioOption($pl->txt('show_link'),self::PAGE_MODE_BUTTON);
+		$mode_button->setInfo($pl->txt('show_link_info'));
 		$show_button = new ilCheckboxInputGUI(
 			$pl->txt('show_button'),
 			'show_button'
 		);
 		$show_button->setValue(1);
 		$show_button->setInfo($pl->txt('show_button_info'));
-		$form->addItem($show_button);
-		
-		$show_video = new ilCheckboxInputGUI(
-			$pl->txt('show_video'),
-			'show_video'
-		);
-		$show_video->setValue(1);
-		$show_video->setInfo($pl->txt('show_video_info'));
-		$form->addItem($show_video);
+		$mode_button->addSubItem($show_button);
+		$radio_button->addOption($mode_button);
+		$mode_video = new \ilRadioOption($pl->txt('show_video'),self::PAGE_MODE_VIDEO);
+		$mode_video->setInfo($pl->txt('show_video_info'));
+		$radio_button->addOption($mode_video);
+
+		$form->addItem($radio_button);
 
 		if($a_create)
 		{
@@ -181,7 +185,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 			$properties = array(
 				'xvid_ref_id' => (int)$form->getInput('xvid_ref_id'),
 				'show_button' => (int)$form->getInput('show_button'),
-				'show_video' => (int)$form->getInput('show_video')
+				'page_mode' => (int)$form->getInput('page_mode')
 			);
 
 			if($this->createElement($properties))
@@ -208,7 +212,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		$form->setValuesByArray(array(
 			'xvid_ref_id' => (int)$properties['xvid_ref_id'],
 			'show_button' => (bool)$properties['show_button'],
-			'show_video' => (bool)$properties['show_video']
+			'page_mode' => (bool)$properties['page_mode']
 		));
 		$tpl->setContent($form->getHTML());
 	}
@@ -226,7 +230,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 			$properties = array(
 				'xvid_ref_id' => (int)$form->getInput('xvid_ref_id'),
 				'show_button' => (int)$form->getInput('show_button'),
-				'show_video' => (int)$form->getInput('show_video')
+				'page_mode' => (int)$form->getInput('page_mode')
 			);
 
 			if($this->updateElement($properties))
@@ -303,7 +307,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		 */
 		$xvid = ilObjectFactory::getInstanceByRefId($ref_id);
 
-		if($a_properties['show_video']) {
+		if($a_properties['page_mode'] == self::PAGE_MODE_VIDEO) {
 			if($ilAccess->checkAccess('read', '', $ref_id)) {
 				$obj    = new ilObjInteractiveVideoGUI($ref_id);
 				$player = $obj->getContentAsString();
@@ -328,7 +332,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
 				require_once 'Services/Link/classes/class.ilLink.php';
 
-				if($a_properties['show_button'])
+				if($a_properties['page_mode'] == self::PAGE_MODE_BUTTON && $a_properties['show_button'])
 				{
 					require_once 'Services/UIComponent/Button/classes/class.ilLinkButton.php';
 					$btn = ilLinkButton::getInstance();
