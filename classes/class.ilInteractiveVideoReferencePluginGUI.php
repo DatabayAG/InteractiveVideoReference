@@ -311,6 +311,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 			if($ilAccess->checkAccess('read', '', $ref_id)) {
 				$obj    = new ilObjInteractiveVideoGUI($ref_id);
 				$player = $obj->getContentAsString();
+				$tpl->setVariable('TITLE', $xvid->getTitle());
 				$tpl->setVariable('PLAYER', $player);
 				return $tpl->get();
 			}
