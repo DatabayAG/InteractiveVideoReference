@@ -10,3 +10,6 @@ Only compatible with InteractiveVideo version 2.0.0 and higher
 
 ## Dependencies
 * InteractiveVideo
+
+## Interactive Video view mode
+![View mode](https://databayag.github.io/InteractiveVideoReference/1.0.1/co_page.png)
