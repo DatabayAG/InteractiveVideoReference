@@ -25,4 +25,9 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilRepositoryExplor
 	{
 		return in_array($a_node['type'], array('xvid'));
 	}
+
+    public function getNodeHref($a_node){
+        return '#';
+    }
+
 }
