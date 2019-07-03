@@ -8,68 +8,69 @@ require_once 'Services/COPage/classes/class.ilPageComponentPlugin.php';
  */
 class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
 {
-	/**
-	 * @var string
-	 */
-	const CTYPE   = 'Services';
+    /**
+     * @var string
+     */
+    const CTYPE = 'Services';
 
-	/**
-	 * @var string
-	 */
-	const CNAME   = 'COPage';
+    /**
+     * @var string
+     */
+    const CNAME = 'COPage';
 
-	/**
-	 * @var string
-	 */
-	const SLOT_ID = 'pgcp';
+    /**
+     * @var string
+     */
+    const SLOT_ID = 'pgcp';
 
-	/**
-	 * @var string
-	 */
-	const PNAME   = 'InteractiveVideoReference';
+    /**
+     * @var string
+     */
+    const PNAME = 'InteractiveVideoReference';
 
-	/**
-	 * @var self
-	 */
-	private static $instance;
+    /**
+     * @var self
+     */
+    private static $instance;
+    /**
+     * @var array
+     */
+    protected static $validParentTypes = array(
+        'lm',
+        'wpg',
+        'cont'
+    );
 
-	/**
-	 * @return self|\ilPlugin|\ilUserInterfaceHookPlugin
-	 */
-	public static function getInstance()
-	{
-		if (null !== self::$instance) {
-			return self::$instance;
-		}
+    /**
+     * @return self|\ilPlugin|\ilUserInterfaceHookPlugin
+     */
+    public static function getInstance()
+    {
+        if (null !== self::$instance) {
+            return self::$instance;
+        }
 
-		return (self::$instance = \ilPluginAdmin::getPluginObject(
-			self::CTYPE,
-			self::CNAME,
-			self::SLOT_ID,
-			self::PNAME
-		));
-	}
+        return (self::$instance = \ilPluginAdmin::getPluginObject(
+            self::CTYPE,
+            self::CNAME,
+            self::SLOT_ID,
+            self::PNAME
+        ));
+    }
 
-	/**
-	 * @var array
-	 */
-	protected static $validParentTypes = array(
-		'lm', 'wpg', 'cont'
-	);
+    /**
+     * @inheritdoc
+     */
+    public function isValidParentType($a_type)
+    {
+        return in_array(strtolower($a_type), self::$validParentTypes);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function isValidParentType($a_type)
-	{
-		return in_array(strtolower($a_type), self::$validParentTypes);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getPluginName()
-	{
-		return 'InteractiveVideoReference';
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getPluginName()
+    {
+        return 'InteractiveVideoReference';
+    }
 }

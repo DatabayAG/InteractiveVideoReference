@@ -9,24 +9,25 @@ require_once 'Services/Repository/classes/class.ilRepositoryExplorerGUI.php';
  */
 class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilRepositoryExplorerGUI
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function __construct($a_parent_obj, $a_parent_cmd)
-	{
-		parent::__construct($a_parent_obj, $a_parent_cmd);
-		$this->setTypeWhiteList(array('root', 'cat', 'crs', 'grp', 'fold', 'xvid'));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($a_parent_obj, $a_parent_cmd)
+    {
+        parent::__construct($a_parent_obj, $a_parent_cmd);
+        $this->setTypeWhiteList(array('root', 'cat', 'crs', 'grp', 'fold', 'xvid'));
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function isNodeSelectable($a_node)
-	{
-		return in_array($a_node['type'], array('xvid'));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function isNodeSelectable($a_node)
+    {
+        return in_array($a_node['type'], array('xvid'));
+    }
 
-    public function getNodeHref($a_node){
+    public function getNodeHref($a_node)
+    {
         return '#';
     }
 
