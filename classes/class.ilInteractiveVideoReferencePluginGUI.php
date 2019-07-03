@@ -143,6 +143,13 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		$radio_button->addOption($mode_button);
 		$mode_video = new \ilRadioOption($pl->txt('show_video'),self::PAGE_MODE_VIDEO);
 		$mode_video->setInfo($pl->txt('show_video_info'));
+        $light_mode = new ilCheckboxInputGUI(
+            $pl->txt('light_mode'),
+            'light_mode'
+        );
+        $light_mode->setValue(1);
+        $light_mode->setInfo($pl->txt('light_mode_info'));
+        $mode_video->addSubItem($light_mode);
 		$radio_button->addOption($mode_video);
 
 		$form->addItem($radio_button);
@@ -185,7 +192,8 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 			$properties = array(
 				'xvid_ref_id' => (int)$form->getInput('xvid_ref_id'),
 				'show_button' => (int)$form->getInput('show_button'),
-				'page_mode' => (int)$form->getInput('page_mode')
+				'page_mode' => (int)$form->getInput('page_mode'),
+				'light_mode' => (int)$form->getInput('light_mode')
 			);
 
 			if($this->createElement($properties))
@@ -212,7 +220,8 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		$form->setValuesByArray(array(
 			'xvid_ref_id' => (int)$properties['xvid_ref_id'],
 			'show_button' => (bool)$properties['show_button'],
-			'page_mode' => (bool)$properties['page_mode']
+			'page_mode' => (bool)$properties['page_mode'],
+			'light_mode' => (bool)$properties['light_mode']
 		));
 		$tpl->setContent($form->getHTML());
 	}
@@ -230,7 +239,8 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 			$properties = array(
 				'xvid_ref_id' => (int)$form->getInput('xvid_ref_id'),
 				'show_button' => (int)$form->getInput('show_button'),
-				'page_mode' => (int)$form->getInput('page_mode')
+				'page_mode' => (int)$form->getInput('page_mode'),
+				'light_mode' => (int)$form->getInput('light_mode')
 			);
 
 			if($this->updateElement($properties))
@@ -310,7 +320,12 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 		if($a_properties['page_mode'] == self::PAGE_MODE_VIDEO) {
 			if($ilAccess->checkAccess('read', '', $ref_id)) {
 				$obj    = new ilObjInteractiveVideoGUI($ref_id);
-				$player = $obj->getContentAsString();
+				$light_mode = false;
+
+				if($a_properties['light_mode'] == 1) {
+				    $light_mode = true;
+                }
+				$player = $obj->getContentAsString($light_mode);
 				$tpl->setVariable('TITLE', $xvid->getTitle());
 				$tpl->setVariable('PLAYER', $player);
 				return $tpl->get();

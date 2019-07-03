@@ -9,3 +9,5 @@ mode#:#Mode with which the InteractiveVideo will be displayed
 show_link_info#:#If activated a link to the interactiveVideo will be displayed.
 show_link#:#Display Link
 show_video_info#:#If activated ILIAS will display the interactive video directly.
+light_mode#:#Light Mode
+light_mode_info#:#If activated ILIAS will display the interactive video only, no comments are displayed.
