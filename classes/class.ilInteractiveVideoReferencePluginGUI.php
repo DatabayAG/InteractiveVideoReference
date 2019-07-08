@@ -258,6 +258,8 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
      * @param array $a_properties
      * @param       $plugin_version
      * @return string
+     * @throws ilDatabaseException
+     * @throws ilObjectNotFoundException
      * @throws ilTemplateException
      */
     public function getElementHTML($a_mode, array $a_properties, $plugin_version)
