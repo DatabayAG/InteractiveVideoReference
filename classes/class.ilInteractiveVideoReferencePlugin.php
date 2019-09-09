@@ -38,7 +38,8 @@ class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
     protected static $validParentTypes = array(
         'lm',
         'wpg',
-        'cont'
+        'cont',
+        'copa'
     );
 
     /**
