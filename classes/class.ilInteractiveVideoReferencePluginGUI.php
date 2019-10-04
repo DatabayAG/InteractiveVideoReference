@@ -288,8 +288,9 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
             return $this->getEmptyResponseString();
         }
 
+        /** @var ilInteractiveVideoReferencePlugin $pl */
         $pl  = $this->getPlugin();
-        $tpl = $pl->getTemplate('tpl.content.html');
+        $tpl = $pl->getTemplate('tpl.content.html', true, true);
         $GLOBALS['tpl']->addCss('./Customizing/global/plugins/Services/COPage/PageComponent/InteractiveVideoReference/templates/xvid_ref.css');
 
         /**
@@ -306,7 +307,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
                     $light_mode = true;
                 }
                 $player = $obj->getContentAsString($light_mode);
-                $tpl->setVariable('TITLE', $xvid->getTitle());
+                $tpl->setVariable('PLAYER_TITLE', $xvid->getTitle());
                 $tpl->setVariable('PLAYER', $player);
                 return $tpl->get();
             }
