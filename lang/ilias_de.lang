@@ -10,4 +10,4 @@ show_link#:#Zeige Link
 show_video#:#Video anzeigen
 show_video_info#:#Falls aktiviert, wird das interaktive Video direkt angezeigt.
 light_mode#:#Nur Video
-light_mode_info#:#Falls aktiviert, wird das nur das interaktive Video angezeigt, es werden keine Kommentarfelder dargestellt.
+light_mode_info#:#Falls aktiviert, wird nur das interaktive Video angezeigt, es werden keine Kommentarfelder dargestellt.
