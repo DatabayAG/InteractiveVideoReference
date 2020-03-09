@@ -27,3 +27,9 @@
 .iosInteractiveVideoReferenceContainer .rgt h2 {
 	margin-top: 0;
 }
+
+.InteractiveVideoReferenceHeader{
+	padding-top: 25px;
+	padding-bottom: 10px;
+	margin-left: -8px;
+}
