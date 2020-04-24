@@ -268,8 +268,9 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
          * @var $ilAccess ilAccessHandler
          * @var $tree     ilTree
          * @var $tpl      ilTemplate
+         * @var $ilCtrl   ilCtrl
          */
-        global $ilAccess, $tree;
+        global $ilAccess, $tree, $ilCtrl;
 
         if (!isset($a_properties['xvid_ref_id']) || !is_numeric($a_properties['xvid_ref_id']) || $a_properties['xvid_ref_id'] <= 0) {
             return $this->getEmptyResponseString();
@@ -300,7 +301,14 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
         if ($a_properties['page_mode'] == self::PAGE_MODE_VIDEO) {
             if ($ilAccess->checkAccess('read', '', $ref_id)) {
+                $id = $ilCtrl->getContextObjId();
+                $type = $ilCtrl->getContextObjType();
+
                 $obj = new ilObjInteractiveVideoGUI($ref_id);
+
+                if ($id) {
+                    $ilCtrl->setContext($id, $type);
+                }
 
                 $light_mode = false;
                 if ($a_properties['light_mode'] == 1) {
