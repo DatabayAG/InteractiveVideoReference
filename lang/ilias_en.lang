@@ -5,8 +5,8 @@ goto_xvid#:#go to the interactive video
 show_button#:#Show Button
 show_button_info#:#If activated ILIAS will display a button to the interactive video in the presentation view.
 show_video#:#Show Video
-mode#:#Mode with which the InteractiveVideo will be displayed
-show_link_info#:#If activated a link to the interactiveVideo will be displayed.
+mode#:#Mode with which the interactive video will be displayed
+show_link_info#:#If activated a link to the interactive video will be displayed.
 show_link#:#Display Link
 show_video_info#:#If activated ILIAS will display the interactive video directly.
 light_mode#:#Light Mode
