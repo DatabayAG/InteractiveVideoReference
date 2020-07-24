@@ -5,7 +5,7 @@ require_once 'Services/COPage/classes/class.ilPageComponentPluginGUI.php';
 require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/InteractiveVideo/classes/class.ilObjInteractiveVideoGUI.php';
 
 /**
- * Class ilInteractiveVideoReferencePlugin
+ * Class ilInteractiveVideoReferencePluginGUI
  * @ilCtrl_isCalledBy ilInteractiveVideoReferencePluginGUI: ilPCPluggedGUI
  * @ilCtrl_Calls      ilInteractiveVideoReferencePluginGUI: ilPropertyFormGUI
  * @ilCtrl_isCalledBy ilInteractiveVideoReferencePluginGUI: ilUIPluginRouterGUI
@@ -24,16 +24,33 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
          * @var $ilCtrl   \ilCtrl
          * @var $ilAccess \ilAccessHandler
          */
-        global $ilCtrl, $ilAccess;
+        global $ilCtrl, $ilAccess, $DIC;
 
         $next_class = $ilCtrl->getNextClass();
 
         $this->ensuredPermissionsForTreeOperationOnCreateEvent($ilCtrl, $ilAccess);
 
         switch ($next_class) {
-            case 'ilpropertyformgui':
-                $ilCtrl->forwardCommand($this->getConfigurationForm());
-                break;
+                case strtolower(ilPropertyFormGUI::class):
+
+                    $repositoryPickerPropertyName = (string) (
+                        $DIC->http()->request()->getQueryParams()['postvar'] ?? ''
+                    );
+                    $isUpdate = isset($DIC->http()->request()->getQueryParams()['pc_id']);
+
+                    $form = $this->getConfigurationForm($isUpdate);
+                    if (strlen($repositoryPickerPropertyName) > 0 && $form->getItemByPostVar($repositoryPickerPropertyName)) {
+                        $repositoryPicker = $form->getItemByPostVar($repositoryPickerPropertyName);
+
+                        $fakeForm = new ilPropertyFormGUI();
+                        $fakeForm->setFormAction($form->getFormAction());
+                        $fakeForm->addItem($repositoryPicker);
+                        if ($isUpdate) {
+                            $fakeForm->setValuesByArray($this->getProperties(), true);
+                        }
+                        $DIC->ctrl()->forwardCommand($fakeForm);
+                    }
+                    break;
 
             default:
                 $cmd = $ilCtrl->getCmd();
@@ -80,7 +97,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
          * @var $lng    ilLanguage
          * @var $ilCtrl ilCtrl
          */
-        global $lng, $ilCtrl;
+        global $lng, $ilCtrl, $DIC;
 
         require_once 'Services/Form/classes/class.ilPropertyFormGUI.php';
 
@@ -97,12 +114,12 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
             $ilCtrl->setParameterByClass('ilInteractiveVideoReferenceRepositorySelectorInputGUI', 'ref_id', (int) $_GET['ref_id']);
             $explorer_gui = new ilInteractiveVideoReferenceSelectionExplorerGUI(
                 array('iluipluginroutergui', __CLASS__, 'ilpropertyformgui', 'ilformpropertydispatchgui', 'ilInteractiveVideoReferenceRepositorySelectorInputGUI'),
-                'handleExplorerCommand'
+                'handleExplorerCommand', 'iv_explorer_selection_42'
             );
         } else {
             $explorer_gui = new ilInteractiveVideoReferenceSelectionExplorerGUI(
                 array('ilpropertyformgui', 'ilformpropertydispatchgui', 'ilInteractiveVideoReferenceRepositorySelectorInputGUI'),
-                'handleExplorerCommand'
+                'handleExplorerCommand', 'iv_explorer_selection_42'
             );
         }
 
@@ -111,6 +128,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
             $pl->txt('xvid_ref_id'),
             'xvid_ref_id', $explorer_gui, false
         );
+
         $sap_root_ref_id->setRequired(true);
         $sap_root_ref_id->setInfo($pl->txt('xvid_ref_id_info'));
         $form->addItem($sap_root_ref_id);
@@ -156,7 +174,6 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     public function getPlugin()
     {
         if (null === $this->plugin) {
-            require 'class.ilInteractiveVideoReferencePlugin.php';
             $this->plugin = \ilInteractiveVideoReferencePlugin::getInstance();
         }
 
