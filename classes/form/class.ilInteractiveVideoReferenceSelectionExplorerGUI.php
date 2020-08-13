@@ -65,6 +65,7 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilTreeExplorerGUI
             $element_id = 'iv_explorer_selection';
         }
         parent::__construct($element_id, $a_parent_obj, $a_parent_cmd, $DIC->repositoryTree());
+        $this->setAjax(true);
         $this->setTypeWhiteList(array('root', 'cat', 'crs', 'grp', 'fold', 'xvid'));
     }
 
