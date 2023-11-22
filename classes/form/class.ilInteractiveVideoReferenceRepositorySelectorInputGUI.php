@@ -13,7 +13,7 @@ class ilInteractiveVideoReferenceRepositorySelectorInputGUI extends ilExplorerSe
     /**
      * @var ilInteractiveVideoReferenceSelectionExplorerGUI
      */
-    protected $explorer_gui;
+    protected ilExplorerBaseGUI $explorer_gui;
 
     /**
      * {@inheritdoc}
@@ -33,7 +33,7 @@ class ilInteractiveVideoReferenceRepositorySelectorInputGUI extends ilExplorerSe
     /**
      * {@inheritdoc}
      */
-    public function getTitleForNodeId($a_id)
+    public function getTitleForNodeId($a_id) : string
     {
         return ilObject::_lookupTitle(ilObject::_lookupObjId($a_id));
     }

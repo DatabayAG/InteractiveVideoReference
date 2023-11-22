@@ -22,12 +22,12 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilTreeExplorerGUI
     /**
      * @var ilLanguage
      */
-    protected $lng;
+    protected ilLanguage $lng;
 
     /**
      * @var ilCtrl
      */
-    protected $ctrl;
+    protected ilCtrl $ctrl;
 
     /**
      * @var ilAccessHandler
@@ -43,7 +43,7 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilTreeExplorerGUI
      * @var ilDBInterface
      */
     protected $db;
-    
+
 
     /**
      * {@inheritdoc}
@@ -72,7 +72,7 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilTreeExplorerGUI
     /**
      * @inheritDoc
      */
-    public function getNodeHref($a_node)
+    public function getNodeHref($a_node) : string
     {
         return '#';
     }
@@ -80,7 +80,7 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilTreeExplorerGUI
     /**
      * @inheritDoc
      */
-    protected function isNodeSelectable($a_node)
+    protected function isNodeSelectable($a_node) : bool
     {
         if ('xvid' === $a_node['type']) {
             return true;
@@ -92,7 +92,7 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilTreeExplorerGUI
     /**
      * @inheritDoc
      */
-    public function setNodeSelected($a_id)
+    public function setNodeSelected($a_id) : void
     {
         parent::setNodeSelected($a_id);
         $this->setPathOpen($a_id);
@@ -106,7 +106,7 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilTreeExplorerGUI
      *
      * @return array array of childs nodes
      */
-    public function sortChilds($a_childs, $a_parent_node_id)
+    public function sortChilds($a_childs, $a_parent_node_id) : array
     {
         $objDefinition = $this->obj_definition;
         $ilAccess = $this->access;
@@ -265,7 +265,7 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilTreeExplorerGUI
      * @param array
      * @return
      */
-    public function getNodeContent($a_node)
+    public function getNodeContent($a_node) : string
     {
         $lng = $this->lng;
 
@@ -292,7 +292,7 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilTreeExplorerGUI
      * @param array
      * @return
      */
-    public function getNodeIcon($a_node)
+    public function getNodeIcon($a_node) : string
     {
         $obj_id = ilObject::_lookupObjId($a_node["child"]);
         return ilObject::_getIcon($obj_id, "tiny", $a_node["type"]);

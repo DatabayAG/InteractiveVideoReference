@@ -62,7 +62,7 @@ class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
     /**
      * @inheritdoc
      */
-    public function isValidParentType($a_type)
+    public function isValidParentType($a_type) : bool
     {
         return in_array(strtolower($a_type), self::$validParentTypes);
     }
@@ -70,7 +70,7 @@ class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
     /**
      * @inheritdoc
      */
-    public function getPluginName()
+    public function getPluginName() : string
     {
         return 'InteractiveVideoReference';
     }

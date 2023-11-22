@@ -18,7 +18,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         /**
          * @var $ilCtrl   \ilCtrl
@@ -171,7 +171,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function getPlugin()
+    public function getPlugin() : ilPageComponentPlugin
     {
         if (null === $this->plugin) {
             $this->plugin = \ilInteractiveVideoReferencePlugin::getInstance();
@@ -183,7 +183,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function insert()
+    public function insert() : void
     {
         global $tpl;
 
@@ -194,7 +194,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function create()
+    public function create() : void
     {
         global $tpl, $lng;
 
@@ -220,7 +220,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function edit()
+    public function edit() : void
     {
         global $tpl;
 
@@ -279,7 +279,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
      * @throws ilObjectNotFoundException
      * @throws ilTemplateException
      */
-    public function getElementHTML($a_mode, array $a_properties, $plugin_version)
+    public function getElementHTML($a_mode, array $a_properties, $plugin_version) : string
     {
         /**
          * @var $ilAccess ilAccessHandler
