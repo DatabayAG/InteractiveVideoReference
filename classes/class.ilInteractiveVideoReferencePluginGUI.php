@@ -1,9 +1,6 @@
 <?php
 /* Copyright (c) 1998-2017 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-require_once 'Services/COPage/classes/class.ilPageComponentPluginGUI.php';
-require_once 'Customizing/global/plugins/Services/Repository/RepositoryObject/InteractiveVideo/classes/class.ilObjInteractiveVideoGUI.php';
-
 /**
  * Class ilInteractiveVideoReferencePlugin
  * @ilCtrl_isCalledBy ilInteractiveVideoReferencePluginGUI: ilPCPluggedGUI
@@ -15,10 +12,12 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     const PAGE_MODE_BUTTON = 0;
     const PAGE_MODE_VIDEO = 1;
 
+    protected ilPageComponentPlugin $plugin;
+
     /**
      * @inheritdoc
      */
-    public function executeCommand()
+    public function executeCommand() : void
     {
         /**
          * @var $ilCtrl   \ilCtrl
@@ -55,7 +54,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
         $history = $ctrl->getCallHistory();
         foreach ($history as $entry) {
-            if (strtolower('ilUIPluginRouterGUI') === strtolower($entry['class'])) {
+            if (strtolower('ilUIPluginRouterGUI') === strtolower($entry['cmdClass'])) {
                 $isTreeCommandOnCreationScreen = true;
                 break;
             }
@@ -82,15 +81,12 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
          */
         global $lng, $ilCtrl;
 
-        require_once 'Services/Form/classes/class.ilPropertyFormGUI.php';
-
         $form = new ilPropertyFormGUI();
         $form->setTitle($lng->txt('settings'));
         $form->setFormAction($ilCtrl->getFormAction($this));
 
         $pl = $this->getPlugin();
 
-        $pl->includeClass('form/class.ilInteractiveVideoReferenceSelectionExplorerGUI.php');
         $ilCtrl->setParameterByClass('ilformpropertydispatchgui', 'postvar', 'xvid_ref_id');
 
         if ($a_create) {
@@ -106,7 +102,6 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
             );
         }
 
-        $pl->includeClass('form/class.ilInteractiveVideoReferenceRepositorySelectorInputGUI.php');
         $sap_root_ref_id = new ilInteractiveVideoReferenceRepositorySelectorInputGUI(
             $pl->txt('xvid_ref_id'),
             'xvid_ref_id', $explorer_gui, false
@@ -153,12 +148,9 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function getPlugin()
+    public function getPlugin() : ilPageComponentPlugin
     {
-        if (null === $this->plugin) {
-            require 'class.ilInteractiveVideoReferencePlugin.php';
-            $this->plugin = \ilInteractiveVideoReferencePlugin::getInstance();
-        }
+        $this->plugin = \ilInteractiveVideoReferencePlugin::getInstance();
 
         return parent::getPlugin();
     }
@@ -166,7 +158,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function insert()
+    public function insert() : void
     {
         global $tpl;
 
@@ -177,7 +169,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function create()
+    public function create() : void
     {
         global $tpl, $lng;
 
@@ -191,7 +183,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
             );
 
             if ($this->createElement($properties)) {
-                ilUtil::sendSuccess($lng->txt('msg_obj_modified'), true);
+                $tpl->setOnScreenMessage("success", $lng->txt('msg_obj_modified'), true);
                 $this->returnToParent();
             }
         }
@@ -203,7 +195,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function edit()
+    public function edit() : void
     {
         global $tpl;
 
@@ -236,7 +228,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
             );
 
             if ($this->updateElement($properties)) {
-                ilUtil::sendSuccess($lng->txt('msg_obj_modified'), true);
+                $tpl->setOnScreenMessage("success", $lng->txt('msg_obj_modified'), true);
                 $this->returnToParent();
             }
         }
@@ -262,7 +254,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
      * @throws ilObjectNotFoundException
      * @throws ilTemplateException
      */
-    public function getElementHTML($a_mode, array $a_properties, $plugin_version)
+    public function getElementHTML($a_mode, array $a_properties, $plugin_version) : string
     {
         /**
          * @var $ilAccess ilAccessHandler
@@ -306,10 +298,6 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
                 $obj = new ilObjInteractiveVideoGUI($ref_id);
 
-                if ($id) {
-                    $ilCtrl->setContext($id, $type);
-                }
-
                 $light_mode = false;
                 if ($a_properties['light_mode'] == 1) {
                     $light_mode = true;
@@ -335,7 +323,6 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
                 require_once 'Services/Link/classes/class.ilLink.php';
 
                 if ($a_properties['page_mode'] == self::PAGE_MODE_BUTTON && $a_properties['show_button']) {
-                    require_once 'Services/UIComponent/Button/classes/class.ilLinkButton.php';
                     $btn = ilLinkButton::getInstance();
                     $btn->setCaption($pl->txt('goto_xvid'), false);
                     $btn->setUrl(ilLink::_getLink($ref_id, 'xvid', $params));

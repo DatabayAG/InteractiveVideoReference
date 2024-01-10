@@ -9,6 +9,24 @@ require_once 'Services/Repository/classes/class.ilRepositoryExplorerGUI.php';
  */
 class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilRepositoryExplorerGUI
 {
+    protected string $id;
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param $id
+     */
+    public function setId($id): void
+    {
+        $this->id = __CLASS__ . '_' . $id;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -21,12 +39,12 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilRepositoryExplor
     /**
      * {@inheritdoc}
      */
-    protected function isNodeSelectable($a_node)
+    protected function isNodeSelectable($a_node) : bool
     {
         return in_array($a_node['type'], array('xvid'));
     }
 
-    public function getNodeHref($a_node)
+    public function getNodeHref($a_node) : string
     {
         return '#';
     }

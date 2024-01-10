@@ -1,8 +1,6 @@
 <?php
 /* Copyright (c) 1998-2016 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-require_once 'Services/UIComponent/Explorer2/classes/class.ilExplorerSelectInputGUI.php';
-
 /**
  * Class ilInteractiveVideoReferenceRepositorySelectorInputGUI
  * @author            Michael Jansen <mjansen@databay.de>
@@ -10,17 +8,13 @@ require_once 'Services/UIComponent/Explorer2/classes/class.ilExplorerSelectInput
  */
 class ilInteractiveVideoReferenceRepositorySelectorInputGUI extends ilExplorerSelectInputGUI
 {
-    /**
-     * @var ilInteractiveVideoReferenceSelectionExplorerGUI
-     */
-    protected $explorer_gui;
+    protected ilExplorerBaseGUI $explorer_gui;
 
     /**
      * {@inheritdoc}
      */
     public function __construct($title, $a_postvar, $a_explorer_gui, $a_multi = false)
     {
-        require_once 'Services/UIComponent/Overlay/classes/class.ilOverlayGUI.php';
         ilOverlayGUI::initJavascript();
 
         $this->explorer_gui = $a_explorer_gui;
@@ -31,9 +25,29 @@ class ilInteractiveVideoReferenceRepositorySelectorInputGUI extends ilExplorerSe
     }
 
     /**
+     * @inheritdoc
+     */
+    public function setValue($a_value): void
+    {
+        if ($this->explorer_gui) {
+            if (is_array($a_value)) {
+                foreach ($a_value as $v) {
+                    $this->explorer_gui->setNodeOpen($v);
+                    $this->explorer_gui->setNodeSelected($v);
+                }
+            } elseif ($a_value != "") {
+                $this->explorer_gui->setNodeOpen($a_value);
+                $this->explorer_gui->setNodeSelected($a_value);
+            }
+        }
+
+        parent::setValue($a_value);
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function getTitleForNodeId($a_id)
+    public function getTitleForNodeId($a_id) : string
     {
         return ilObject::_lookupTitle(ilObject::_lookupObjId($a_id));
     }

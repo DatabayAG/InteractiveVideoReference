@@ -47,22 +47,36 @@ class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
      */
     public static function getInstance()
     {
-        if (null !== self::$instance) {
+        if (self::$instance instanceof self) {
             return self::$instance;
         }
 
-        return (self::$instance = \ilPluginAdmin::getPluginObject(
+        global $DIC;
+
+        /** @var ilComponentRepository $component_repository */
+        if(!isset($DIC['component.repository'])) {
+            $component =  new InitComponentService();
+            $component->init($DIC);
+        }
+        $component_repository = $DIC['component.repository'];
+        /** @var ilComponentFactory $component_factory */
+        $component_factory = $DIC['component.factory'];
+
+        $plugin_info = $component_repository->getComponentByTypeAndName(
             self::CTYPE,
-            self::CNAME,
-            self::SLOT_ID,
-            self::PNAME
-        ));
+            self::CNAME
+        )->getPluginSlotById(self::SLOT_ID)->getPluginByName(self::PNAME);
+
+        self::$instance = $component_factory->getPlugin($plugin_info->getId());
+
+        return self::$instance;
+
     }
 
     /**
      * @inheritdoc
      */
-    public function isValidParentType($a_type)
+    public function isValidParentType($a_type) : bool
     {
         return in_array(strtolower($a_type), self::$validParentTypes);
     }
@@ -70,7 +84,7 @@ class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
     /**
      * @inheritdoc
      */
-    public function getPluginName()
+    public function getPluginName() : string
     {
         return 'InteractiveVideoReference';
     }
