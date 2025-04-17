@@ -120,6 +120,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
         $show_button->setValue(1);
         $show_button->setInfo($pl->txt('show_button_info'));
         $mode_button->addSubItem($show_button);
+        $radio_button->setValue(0);
         $radio_button->addOption($mode_button);
         $mode_video = new \ilRadioOption($pl->txt('show_video'), self::PAGE_MODE_VIDEO);
         $mode_video->setInfo($pl->txt('show_video_info'));
