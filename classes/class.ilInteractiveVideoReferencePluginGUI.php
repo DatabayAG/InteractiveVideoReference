@@ -320,8 +320,6 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
                 }
                 $params['xvid_referrer_ref_id'] = (int) $_GET['ref_id'];
 
-                require_once 'Services/Link/classes/class.ilLink.php';
-
                 if ($a_properties['page_mode'] == self::PAGE_MODE_BUTTON && $a_properties['show_button']) {
                     $btn = ilLinkButton::getInstance();
                     $btn->setCaption($pl->txt('goto_xvid'), false);
