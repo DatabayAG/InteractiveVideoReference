@@ -120,6 +120,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
         $show_button->setValue(1);
         $show_button->setInfo($pl->txt('show_button_info'));
         $mode_button->addSubItem($show_button);
+        $radio_button->setValue(0);
         $radio_button->addOption($mode_button);
         $mode_video = new \ilRadioOption($pl->txt('show_video'), self::PAGE_MODE_VIDEO);
         $mode_video->setInfo($pl->txt('show_video_info'));
@@ -319,8 +320,6 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
                     $params['xvid_referrer'] = urlencode($_SERVER['REQUEST_URI']);
                 }
                 $params['xvid_referrer_ref_id'] = (int) $_GET['ref_id'];
-
-                require_once 'Services/Link/classes/class.ilLink.php';
 
                 if ($a_properties['page_mode'] == self::PAGE_MODE_BUTTON && $a_properties['show_button']) {
                     $btn = ilLinkButton::getInstance();
