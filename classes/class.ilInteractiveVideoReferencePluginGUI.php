@@ -205,9 +205,9 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
         $form = $this->getConfigurationForm();
         $form->setValuesByArray(array(
             'xvid_ref_id' => (int) $properties['xvid_ref_id'],
-            'show_button' => (bool) $properties['show_button'],
-            'page_mode'   => (bool) $properties['page_mode'],
-            'light_mode'  => (bool) $properties['light_mode']
+            'show_button' => (int) $properties['show_button'],
+            'page_mode'   => (int) $properties['page_mode'],
+            'light_mode'  => (int) $properties['light_mode']
         ));
         $tpl->setContent($form->getHTML());
     }
