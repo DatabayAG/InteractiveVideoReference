@@ -12,7 +12,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     const PAGE_MODE_BUTTON = 0;
     const PAGE_MODE_VIDEO = 1;
 
-    protected ilPageComponentPlugin $plugin;
+    protected ilInteractiveVideoReferencePlugin $local_plugin;
 
     /**
      * @inheritdoc
@@ -85,7 +85,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
         $form->setTitle($lng->txt('settings'));
         $form->setFormAction($ilCtrl->getFormAction($this));
 
-        $pl = $this->getPlugin();
+        $pl = $this->getLocalPlugin();
 
         $ilCtrl->setParameterByClass('ilformpropertydispatchgui', 'postvar', 'xvid_ref_id');
 
@@ -149,10 +149,14 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
     /**
      * @inheritdoc
      */
-    public function getPlugin() : ilPageComponentPlugin
+    public function getLocalPlugin()
     {
-        $this->plugin = \ilInteractiveVideoReferencePlugin::getInstance();
+        global $DIC;
 
+        $this->local_plugin = new ilInteractiveVideoReferencePlugin($DIC->database(), $DIC["component.repository"],
+            'pciavidref');
+
+        parent::setPlugin($this->local_plugin);
         return parent::getPlugin();
     }
 
@@ -283,8 +287,8 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
         }
 
         /** @var ilInteractiveVideoReferencePlugin $pl */
-        $pl  = $this->getPlugin();
-        $tpl = $pl->getTemplate('tpl.content.html', true, true);
+        $pl  = $this->getLocalPlugin();
+        $tpl = new ilTemplate("tpl.content.html", true, true, $pl->getDirectory());
         $GLOBALS['tpl']->addCss('./Customizing/global/plugins/Services/COPage/PageComponent/InteractiveVideoReference/templates/xvid_ref.css');
 
         /**

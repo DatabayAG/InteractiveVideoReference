@@ -1,12 +1,11 @@
 <?php
 /* Copyright (c) 1998-2017 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-require_once 'Services/COPage/classes/class.ilPageComponentPlugin.php';
 
 /**
  * Class ilInteractiveVideoReferencePlugin
  */
-class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
+class ilInteractiveVideoReferencePlugin extends ilPageComponentPlugin
 {
     /**
      * @var string
@@ -45,7 +44,7 @@ class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
     /**
      * @return self|\ilPlugin|\ilUserInterfaceHookPlugin
      */
-    public static function getInstance()
+    public static function getInstance(): ilPlugin
     {
         if (self::$instance instanceof self) {
             return self::$instance;
@@ -62,10 +61,7 @@ class ilInteractiveVideoReferencePlugin extends \ilPageComponentPlugin
         /** @var ilComponentFactory $component_factory */
         $component_factory = $DIC['component.factory'];
 
-        $plugin_info = $component_repository->getComponentByTypeAndName(
-            self::CTYPE,
-            self::CNAME
-        )->getPluginSlotById(self::SLOT_ID)->getPluginByName(self::PNAME);
+        $plugin_info = $component_repository->getPluginById('xvid');
 
         self::$instance = $component_factory->getPlugin($plugin_info->getId());
 

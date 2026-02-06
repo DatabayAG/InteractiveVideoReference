@@ -1,7 +1,6 @@
 <?php
 /* Copyright (c) 1998-2016 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-require_once 'Services/Repository/classes/class.ilRepositoryExplorerGUI.php';
 
 /**
  * Class ilInteractiveVideoReferenceSelectionExplorerGUI
@@ -41,7 +40,7 @@ class ilInteractiveVideoReferenceSelectionExplorerGUI extends ilRepositoryExplor
      */
     protected function isNodeSelectable($a_node) : bool
     {
-        return in_array($a_node['type'], array('xvid'));
+        return $a_node['type'] === 'xvid';
     }
 
     public function getNodeHref($a_node) : string
