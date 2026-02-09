@@ -36,7 +36,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
             default:
                 $cmd = $ilCtrl->getCmd();
-                if (in_array($cmd, array('create', 'save', 'edit', 'update', 'cancel'))) {
+                if (in_array($cmd, array('create', 'save', 'edit', 'update', 'cancel', 'create_plug'))) {
                     $this->$cmd();
                 }
                 break;
@@ -288,7 +288,9 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
         /** @var ilInteractiveVideoReferencePlugin $pl */
         $pl  = $this->getLocalPlugin();
-        $tpl = new ilTemplate("tpl.content.html", true, true, $pl->getDirectory());
+        $tpl = $this->getPlugin()->getTemplate('tpl.content.html', false, false);
+        $question = new ilTemplate("tpl.simple_questions.html", true, true, ilInteractiveVideoPlugin::getInstance()->getDirectory());
+
         $GLOBALS['tpl']->addCss('./Customizing/global/plugins/Services/COPage/PageComponent/InteractiveVideoReference/templates/xvid_ref.css');
 
         /**
