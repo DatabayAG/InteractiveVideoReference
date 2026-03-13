@@ -1,6 +1,6 @@
 cmd_insert#:#Bestehendes interaktives Video einfügen
 xvid_ref_id#:#Interaktives Video einfügen
-xvid_ref_id_info#:#Bitte wählen Sie eine interaktives Video aus dem Magazin-Baum aus.
+xvid_ref_id_info#:#Bitte wählen Sie ein interaktives Video aus dem Magazin-Baum aus.
 goto_xvid#:#weiter zum interaktiven Video
 show_button#:#Button anzeigen
 show_button_info#:#Falls aktiviert, wird in der Präsentationsansicht ein Button zum interaktiven Video angezeigt.
