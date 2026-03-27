@@ -337,7 +337,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
                 $tpl->setVariable('LINKED_TITLE', $xvid->getTitle());
                 $tpl->setVariable('URL', ilLink::_getLink($ref_id, 'xvid', $params));
             } else {
-                $tpl->setVariable('UNLINKED_TITLE', $xvid->getTitle());
+                $tpl->setVariable('UNLINKED_TITLE', '<h2>' . $xvid->getTitle() . '</h2>');
             }
             return $tpl->get();
         }
