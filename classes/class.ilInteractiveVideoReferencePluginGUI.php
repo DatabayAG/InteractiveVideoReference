@@ -288,7 +288,7 @@ class ilInteractiveVideoReferencePluginGUI extends \ilPageComponentPluginGUI
 
         /** @var ilInteractiveVideoReferencePlugin $pl */
         $pl  = $this->getLocalPlugin();
-        $tpl = $this->getPlugin()->getTemplate('tpl.content.html', false, false);
+        $tpl = $this->getPlugin()->getTemplate('tpl.content.html', false, true);
         $question = new ilTemplate("tpl.simple_questions.html", true, true, ilInteractiveVideoPlugin::getInstance()->getDirectory());
 
         $GLOBALS['tpl']->addCss('./Customizing/global/plugins/Services/COPage/PageComponent/InteractiveVideoReference/templates/xvid_ref.css');
