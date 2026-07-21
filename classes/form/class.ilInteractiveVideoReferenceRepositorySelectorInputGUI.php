@@ -15,8 +15,6 @@ class ilInteractiveVideoReferenceRepositorySelectorInputGUI extends ilExplorerSe
      */
     public function __construct($title, $a_postvar, $a_explorer_gui, $a_multi = false)
     {
-        ilOverlayGUI::initJavascript();
-
         $this->explorer_gui = $a_explorer_gui;
         $this->explorer_gui->setSelectMode($a_postvar . '_sel', $a_multi);
 

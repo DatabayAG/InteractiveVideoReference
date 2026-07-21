@@ -1,5 +1,5 @@
 # InteractiveVideoReference
-* For ILIAS versions: 10.0 - 10.999
+* For ILIAS versions: 11.0 - 11.999
 Only compatible with InteractiveVideo version 2.0.0 and higher
 
 ## Installation Instructions
